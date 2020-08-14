@@ -7,8 +7,8 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-# from catalog.forms import RenewBookForm
-from catalog.forms import RenewBookModelForm
+from catalog.forms import RenewBookForm
+# from catalog.forms import RenewBookModelForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -55,7 +55,7 @@ class BookListView(PermissionRequiredMixin,generic.ListView):
     # Or multiple permissions
     permission_required = ('catalog.can_mark_returned', 'catalog.can_edit')
     model = Book
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self):
         return Book.objects.all()
@@ -64,7 +64,7 @@ class BookDetailView(LoginRequiredMixin,generic.DetailView):
 
 class AuthorListView(generic.ListView):
     model = Author
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self):
         return Author.objects.all()
@@ -77,7 +77,7 @@ class BookListView(PermissionRequiredMixin,generic.ListView):
     # Or multiple permissions
     permission_required = ('catalog.can_mark_returned', 'catalog.can_edit')
     model = Book
-    paginate_by = 1
+    paginate_by = 10
 class BookDetailView(LoginRequiredMixin,generic.DetailView):
     model = Book
 
@@ -87,13 +87,15 @@ def book_detail_view(request, primary_key):
 
 class AuthorsListView(LoginRequiredMixin,generic.ListView):
     model = Author
-    paginate_by = 1
+    paginate_by = 10
 class AuthorsDetailView(LoginRequiredMixin,generic.DetailView):
     model = Author
 
 def authors_detail_view(request, primary_key):
     author = get_object_or_404(Book, pk=primary_key)
     return render(request, 'catalog/author_detail.html', context={'author': author})
+
+
 class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     """Generic class-based view listing books on loan to current user."""
     model = BookInstance
